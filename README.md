@@ -76,6 +76,8 @@ sudo nano /etc/samba/smb.conf
    valid users = henrik
 ```
 
+![config](img/config.png)
+
 ### Explanation of Config Options
 
 - **path**: Directory to share
@@ -83,9 +85,11 @@ sudo nano /etc/samba/smb.conf
 - **browsable**: Appears under “Network” in file managers
 - **valid users**: Limits access to specified users
 
-![config](https://github.com/HMJ3/samba-file-server/blob/main/config.png)
 
 ## Firewall Configuration & Samba Restart
+
+By default UFW (Uncomplicated Firewall) on Ubunut is disabled, I however
+want it enabled for security reasons.
 
 1. Enable UFW firewall:
 
@@ -94,13 +98,15 @@ sudo ufw enable
 sudo ufw status
 ```
 
-2. Restart Samba service:
+2. Restart Samba service - This saves
+and refreshes changes we did in our config file
 
 ```bash
 sudo service smbd restart
 ```
 
-3. Allow Samba through firewall:
+3. Allow Samba through firewall – Opens ports that
+are required for Samba to share files
 
 ```bash
 sudo ufw allow samba
@@ -108,37 +114,55 @@ sudo ufw allow samba
 
 ## Creating Samba User
 
-> Samba uses its own authentication system, separate from system passwords.
+Since Samba does not use the system account password, we need to set
+up a Samba password for our user account.
 
 ```bash
 sudo smbpasswd -a henrik
 ```
 
-Make sure `henrik` is a valid system user before setting a Samba password.
+Make sure `henrik` is a valid system user before setting a Samba password. Otherwise it will not work.
+
+![user](img/user.png)
 
 ## Testing the Connection
 
 Testing was done using a **Mac** client.
 
-### Steps:
+![server](img/server.png)
+
+### Let's connect!
 
 1. Open **Finder**
 2. Click on **Go > Connect to Server**
-3. Enter the server address:
+3. Select **Connect to Server**
+
+![connect](img/connect.png)
+
+4. Enter ip address and directory name
 
 ```
 smb://<server-ip>/sambashare
 ```
 
-4. Enter credentials
-5. Create a folder (e.g., `TestiKansio`) to verify access
+![info](img/info.png)
 
-### ✅ Result
+5. Enter credentials and connect
+
+![credentials](img/credentials.png)
+
+6. Create a folder in your file directory and verify server side upload
+
+![folder](img/folder.png)
+
+### Result
 
 - Folder successfully created and visible on the server
 - File sharing works across the network
 - **Key takeaway**: Early verification of network connectivity ensured smooth setup
 
-## 📚 Resources
+![result](img/result.png)
+
+## Resources
 
 - [Ubuntu Samba Tutorial](https://ubuntu.com/tutorials/install-and-configure-samba#1-overview)
