@@ -5,7 +5,7 @@
 **Date:** March 23, 2025  
 **Institution:** Haaga-Helia University of Applied Sciences  
 
-## Video Demonstration (in finnish)
+## Video Demonstration (in Finnish)
 [Watch Demonstration](https://www.youtube.com/watch?v=tWc8vdpudu0)
 
 ## Project Document
