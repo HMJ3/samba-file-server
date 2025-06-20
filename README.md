@@ -5,74 +5,65 @@
 **Date:** March 23, 2025  
 **Institution:** Haaga-Helia University of Applied Sciences  
 
-## Overview
+## Project Document
 
-A **Samba file server** enables file sharing across different operating systems over a network. It allows you to access your desktop files from a laptop and share files with Windows and macOS users.
+A Samba file server enables file sharing across different operating systems over a network. It lets you access your desktop files from a laptop and share files with Windows and macOS users.
 
-## Requirements
+## Verify requirements for installation
 
-- Ubuntu 16.04 LTS (tested on Ubuntu 24.04.2 LTS)
-- Local LAN network
+### Requirements
 
-## Technical Details:
+- Ubuntu version 16.04 LTS  
+- Local Lan Network  
 
-- Host: Mac mini M4 2024, macOS Sequoia 15.3.2
-- Server: Linux, running on VirtualBox, Ubuntu 24.04.2 LTS 
-
-### Verifying Environment
+To verify we use commands:
 
 ```bash
 lsb_release -a
-# Output: Release Ubuntu 24.04.2 LTS
 ```
-Ensure your network settings are set to **Bridged Adapter** so the server gets its own IP.
 
-Ping from host to server to test connectivity.
+Result:  
+“Release Ubuntu 24.04.2. LTS”
 
-## Ubuntu Server Setup
+Network: I will use my personal wifi-network
 
-- Perform a normal install of Ubuntu Server
-- Change network adapter to **Bridged Adapter**
-- Check IP with:
+## Install and Configure Ubuntu Server
 
+- Do a normal install  
+- Change network settings: NAT > Bridged Adapter (server gets it’s own ip on network)  
+- Verify ip address with cmd:
+  
 ```bash
 ip a
 ```
 
-- Ping test from host machine to the server
+- Send ping from host > server  
 
-## Installing Samba
+## Install Samba
 
 ```bash
-sudo apt update
-sudo apt install samba
-whereis samba  # Verify Samba installation
+sudo apt update         # update system
+sudo apt install samba  # install samba
+whereis samba           # verify location of system
 ```
 
-Now we have a live ubuntu server running with samba installed. We have
-verified that samba can be found on the system and that our network
-connection between host and server is working.
+Now we have a live ubuntu server running with samba installed. We have verified that samba can be found on the system and that our network connection between host and server is working.
 
-## Configuring Samba
+## Configure Samba
 
-1. Create a directory for sharing:
+Steps:
 
 ```bash
 mkdir /home/henrik/sambashare
-```
-
-2. Edit Samba configuration file:
-
-```bash
 sudo nano /etc/samba/smb.conf
 ```
 
-3. Add the following to the end of the file:
+Add the following at the bottom of the file:
 
 ```ini
 [sambashare]
    comment = Samba on Ubuntu
-   path = /home/henrik/sambashare
+   path = /home/username/sambashare
    read only = no
    browsable = yes
    valid users = henrik
@@ -80,91 +71,71 @@ sudo nano /etc/samba/smb.conf
 
 ![config](img/config.png)
 
-### Explanation of Config Options
+## What have we added?
 
-- **path**: Directory to share
-- **read only**: `no` allows read/write access
-- **browsable**: Appears under “Network” in file managers
-- **valid users**: Limits access to specified users
+- **path:** The directory of our share  
+- **read only:** Permission to modify the contents of the share folder is only granted when the value of this directive is no.  
+- **browsable:** When set to yes, file managers such as Ubuntu’s default file manager will list this share under “Network” (it could also appear as browsable).  
+- **guest ok:** Define if a guest user can access the server  
+- **valid user:** Users who have access to the file server  
 
+## Restart & Update Firewall Rules
 
-## Firewall Configuration & Samba Restart
-
-By default UFW (Uncomplicated Firewall) on Ubunut is disabled, I however
-want it enabled for security reasons.
-
-1. Enable UFW firewall:
+By default UFW (Uncomplicated Firewall) on Ubuntu is disabled, I however want it enabled for security reasons.
 
 ```bash
-sudo ufw enable
-sudo ufw status
+sudo ufw enable            # enable firewall
+sudo ufw status            # verify status
+sudo service smbd restart  # restart samba, refresh config
+sudo ufw allow samba       # open ports required for samba
 ```
 
-2. Restart Samba service - This saves
-and refreshes changes we did in our config file
+## User Accounts & Connecting to Share
+
+Since Samba does not use the system account password, we need to set up a Samba password for our user account.
 
 ```bash
-sudo service smbd restart
+sudo smbpasswd -a username
 ```
 
-3. Allow Samba through firewall – Opens ports that
-are required for Samba to share files
-
-```bash
-sudo ufw allow samba
-```
-
-## Creating Samba User
-
-Since Samba does not use the system account password, we need to set
-up a Samba password for our user account.
-
-```bash
-sudo smbpasswd -a henrik
-```
-
-Make sure `henrik` is a valid system user before setting a Samba password. Otherwise it will not work.
+This has to be a username that is registered on the system, otherwise it will not save.
 
 ![user](img/user.png)
 
-## Testing the Connection
+## Testing
 
-Testing was done using a **Mac** client.
+We will conduct a test by connecting to our server from a Mac computer, and creating a test folder called “TestiKansio”.
 
 ![server](img/server.png)
 
-### Let's connect!
+## Let’s connect!
 
-1. Open **Finder**
-2. Click on **Go > Connect to Server**
-3. Select **Connect to Server**
+#### Step 1 - Open Finder  
+
+#### Step 2 – Select “Go”  
+
+#### Step 3 – Select “Connect to Server”  
 
 ![connect](img/connect.png)
 
-4. Enter ip address and directory name
-
-```
-smb://<server-ip>/sambashare
-```
+#### Step 4 – Enter ip address and directory name  
 
 ![info](img/info.png)
 
-5. Enter credentials and connect
+#### Step 5 – Insert credentials and connect  
 
 ![credentials](img/credentials.png)
 
-6. Create a folder in your file directory and verify server side upload
+#### Step 6 – Create a folder in your file directory and verify server side upload  
 
 ![folder](img/folder.png)
 
-### Result
+## Result
 
-- Folder successfully created and visible on the server
-- File sharing works across the network
-- **Key takeaway**: Early verification of network connectivity ensured smooth setup
+Successful installation! Key point was that I verified early on that my network connection is working.
 
 ![result](img/result.png)
 
-## Resources
+## Resource
 
-- [Ubuntu Samba Tutorial](https://ubuntu.com/tutorials/install-and-configure-samba#1-overview)
+https://ubuntu.com/tutorials/install-and-configure-samba#1-overview  
