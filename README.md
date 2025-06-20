@@ -14,15 +14,17 @@ A **Samba file server** enables file sharing across different operating systems 
 - Ubuntu 16.04 LTS (tested on Ubuntu 24.04.2 LTS)
 - Local LAN network
 
+## Technical Details:
+
+- Host: Mac mini M4 2024, macOS Sequoia 15.3.2
+- Server: Linux, running on VirtualBox, Ubuntu 24.04.2 LTS 
+
 ### Verifying Environment
 
 ```bash
 lsb_release -a
 # Output: Release Ubuntu 24.04.2 LTS
-
-ip a  # Verify IP address
 ```
-
 Ensure your network settings are set to **Bridged Adapter** so the server gets its own IP.
 
 Ping from host to server to test connectivity.
