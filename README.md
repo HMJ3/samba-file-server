@@ -111,29 +111,29 @@ We will conduct a test by connecting to our server from a Mac computer, and crea
 
 ![server](img/server.png)
 
-## Let’s connect!
+### Let’s connect!
 
-#### Step 1 - Open Finder  
+**Step 1** - Open Finder  
 
-#### Step 2 – Select “Go”  
+**Step 2** – Select “Go”  
 
-#### Step 3 – Select “Connect to Server”  
+**Step 3** – Select “Connect to Server”  
 
 ![connect](img/connect.png)
 
-#### Step 4 – Enter ip address and directory name  
+**Step 4** – Enter ip address and directory name  
 
 ![info](img/info.png)
 
-#### Step 5 – Insert credentials and connect  
+**Step 5** – Insert credentials and connect  
 
 ![credentials](img/credentials.png)
 
-#### Step 6 – Create a folder in your file directory and verify server side upload  
+**Step 6** – Create a folder in your file directory and verify server side upload  
 
 ![folder](img/folder.png)
 
-## Result
+### Result
 
 Successful installation! Key point was that I verified early on that my network connection is working.
 
