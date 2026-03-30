@@ -87,7 +87,7 @@ By default UFW (Uncomplicated Firewall) on Ubuntu is disabled, I however want it
 sudo ufw enable            # enable firewall
 sudo ufw status            # verify status
 sudo service smbd restart  # restart samba, refresh config
-sudo ufw allow samba       # open ports required for samba
+sudo ufw allow samba       # open ports required for samba on local network (no remote access)
 ```
 
 ## User Accounts & Connecting to Share
